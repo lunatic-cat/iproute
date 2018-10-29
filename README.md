@@ -1,5 +1,7 @@
 # iproute
 
+[![Build Status][BS img]][Build Status]
+
 A Clojure library designed to parse output of ip route utils
 
 ## Usage
@@ -24,3 +26,6 @@ Copyright © 2018 Vlad Bokov
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
+
+[Build Status]: https://travis-ci.org/razum2um/iproute
+[BS img]: https://travis-ci.org/razum2um/iproute.png
