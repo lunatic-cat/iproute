@@ -1,0 +1,53 @@
+route = <_>? mode? default? net? via? dev (table | proto | metric | expires | mtu | advmss | error | hoplimit | scope | src)*
+mode = ('local' | 'broadcast' | 'unreachable') <_>?
+net = ip mask? <_>?
+default = <'default'> <_>?
+via = <'via'> <_>? ip? <_>?
+mask = <'/'> #'\d{1,2}' <_>?
+ip = (ipv4 | ipv6) <_>?
+<n> = #'[0-9]+'
+dev = <'dev'> <_> word <_>?
+table = <'table'> <_> word <_>?
+proto = <'proto'> <_> word <_>?
+metric = <'metric'> <_> n <_>?
+expires = <'expires'> <_> n <'sec'> <_>?
+mtu = <'mtu'> <_> n <_>?
+advmss = <'advmss'> <_> n <_>?
+error = <'error'> <_> int <_>?
+<int> = #'-?[0-9]+'
+hoplimit = <'hoplimit'> <_> n <_>?
+scope = <'scope'> <_> word <_>?
+src = <'src'> <_> ip <_>?
+<word> = #'[a-za-z0-9]+'
+<_> = #'\s'*
+
+(* https://stackoverflow.com/a/14639569/423551 *)
+<ipv6> = h16-colon-6 ls32 |
+      "::" h16-colon-5 ls32 |
+      h16? "::" h16-colon-4 ls32 |
+      h16-colon-upto-1? "::" h16-colon-3 ls32 |
+      h16-colon-upto-2? "::" h16-colon-2 ls32 |
+      h16-colon-upto-3? "::" h16 ":" ls32 |
+      h16-colon-upto-4? "::" ls32 |
+      h16-colon-upto-5? "::" h16 |
+      h16-colon-upto-6? "::"
+
+(* https://github.com/Engelberg/instaparse/issues/187 *)
+<h16-colon-6> = #"([0-9a-fa-f]{1,4}:){6}"
+<h16-colon-5> = #"([0-9a-fa-f]{1,4}:){5}"
+<h16-colon-4> = #"([0-9a-fa-f]{1,4}:){4}"
+<h16-colon-3> = #"([0-9a-fa-f]{1,4}:){3}"
+<h16-colon-2> = #"([0-9a-fa-f]{1,4}:){2}"
+<h16-colon-upto-6> = #"([0-9a-fa-f]{1,4}:){0,6}[0-9a-fa-f]{1,4}"
+<h16-colon-upto-5> = #"([0-9a-fa-f]{1,4}:){0,5}[0-9a-fa-f]{1,4}"
+<h16-colon-upto-4> = #"([0-9a-fa-f]{1,4}:){0,4}[0-9a-fa-f]{1,4}"
+<h16-colon-upto-3> = #"([0-9a-fa-f]{1,4}:){0,3}[0-9a-fa-f]{1,4}"
+<h16-colon-upto-2> = #"([0-9a-fa-f]{1,4}:){0,2}[0-9a-fa-f]{1,4}"
+<h16-colon-upto-1> = #"([0-9a-fa-f]{1,4}:){0,1}[0-9a-fa-f]{1,4}"
+
+<ls32> = h16 ":" h16 | ipv4
+<h16> = #"[0-9a-fa-f]{1,4}"
+
+<ipv4> = dec-octet "." dec-octet "." dec-octet "." dec-octet
+<dec-octet> = digit | (#"[0-9]" digit) | ("1" digit digit) | ("2" #"[0-4]" digit) | ("25" #"[0-5]")
+<digit> = #"[0-9]"
