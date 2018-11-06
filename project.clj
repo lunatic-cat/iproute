@@ -1,4 +1,4 @@
-(defproject iproute "0.1.0"
+(defproject iproute "0.1.1-SNAPSHOT"
   :description "iproute2 parser"
   :url "https://github.com/razum2um/iproute"
   :license {:name "Eclipse Public License"
