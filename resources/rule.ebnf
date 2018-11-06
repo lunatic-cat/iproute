@@ -1,0 +1,18 @@
+rules = (rule <nl>?)+
+rule = <_>? pref colon from to? lookup
+
+pref = n
+<colon> = <':'> <tab>
+from = <'from'> <_> word <_>?
+to = <'to'> <_> ipv4 <_>?
+lookup = <'lookup'> <_> word <_>?
+
+<n> = #'[0-9]+'
+<word> = #'[a-za-z0-9]+'
+<_> = #' '*
+<tab> = #'\t'
+<nl> = #'\n'
+
+<ipv4> = dec-octet "." dec-octet "." dec-octet "." dec-octet
+<dec-octet> = digit | (#"[0-9]" digit) | ("1" digit digit) | ("2" #"[0-4]" digit) | ("25" #"[0-5]")
+<digit> = #"[0-9]"
