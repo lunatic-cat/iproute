@@ -1,8 +1,9 @@
 # iproute
 
 [![Build Status][BS img]][Build Status]
+[![Clojars Project](https://img.shields.io/clojars/v/iproute.svg)](https://clojars.org/iproute)
 
-A Clojure library designed to parse output of ip route utils
+A library to parse output of `iproute2` using EBNF grammar
 
 ## Usage
 
@@ -13,11 +14,25 @@ A Clojure library designed to parse output of ip route utils
   127.0.0.0/8 dev lo  scope link")
   
 (iproute.route/parse samples)
+
 [{:net {:ip "10.8.0.32"}, :dev "tun11", :proto "kernel", :scope "link", :src {:ip "10.8.0.31"}}
 {:net {:ip "169.254.0.0", :mask "16"}, :dev "eth0", :proto "kernel", :scope "link", :src {:ip "169.254.70.142"}}
 {:net {:ip "fe80::", :mask "64"}, :dev "eth1", :proto "kernel", :metric 256, :mtu 1500, :advmss 1440, :hoplimit 0}
 {:net {:ip "127.0.0.0", :mask "8"}, :dev "lo", :scope "link"}]
 
+(def rule-samples "0:	from all lookup local
+  10097:	from all to 8.8.8.8 lookup ovpnc1
+  10098:	from all to 1.1.1.1 lookup ovpnc1
+  32766:	from all lookup main
+  32767:	from all lookup default")
+
+(iproute.rule/parse rule-samples)
+
+[{:pref 0, :from "all", :lookup "local"}
+{:pref 10097, :from "all", :to "8.8.8.8", :lookup "ovpnc1"}
+{:pref 10098, :from "all", :to "1.1.1.1", :lookup "ovpnc1"}
+{:pref 32766, :from "all", :lookup "main"}
+{:pref 32767, :from "all", :lookup "default"}]
 ```
 
 ## REPL Development
