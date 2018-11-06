@@ -1,3 +1,4 @@
+routes = (route <nl>?)+
 route = <_>? mode? default? net? via? dev (table | proto | metric | expires | mtu | advmss | error | hoplimit | scope | src)*
 mode = ('local' | 'broadcast' | 'unreachable') <_>?
 net = ip mask? <_>?
@@ -19,7 +20,8 @@ hoplimit = <'hoplimit'> <_> n <_>?
 scope = <'scope'> <_> word <_>?
 src = <'src'> <_> ip <_>?
 <word> = #'[a-za-z0-9]+'
-<_> = #'\s'*
+<_> = #' '*
+<nl> = #'\n'
 
 (* https://stackoverflow.com/a/14639569/423551 *)
 <ipv6> = h16-colon-6 ls32 |

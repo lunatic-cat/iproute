@@ -7,22 +7,18 @@ A Clojure library designed to parse output of ip route utils
 ## Usage
 
 ```clojure
-(def samples (map string/trim (string/split "10.8.0.32 dev tun11  proto kernel  scope link  src 10.8.0.31
+(def samples "10.8.0.32 dev tun11  proto kernel  scope link  src 10.8.0.31
   169.254.0.0/16 dev eth0  proto kernel  scope link  src 169.254.70.142
   fe80::/64 dev eth1  proto kernel  metric 256  mtu 1500 advmss 1440 hoplimit 0
-  127.0.0.0/8 dev lo  scope link" #"\n")))
+  127.0.0.0/8 dev lo  scope link")
+  
+(iproute.route/parse samples)
+[{:net {:ip "10.8.0.32"}, :dev "tun11", :proto "kernel", :scope "link", :src {:ip "10.8.0.31"}}
+{:net {:ip "169.254.0.0", :mask "16"}, :dev "eth0", :proto "kernel", :scope "link", :src {:ip "169.254.70.142"}}
+{:net {:ip "fe80::", :mask "64"}, :dev "eth1", :proto "kernel", :metric 256, :mtu 1500, :advmss 1440, :hoplimit 0}
+{:net {:ip "127.0.0.0", :mask "8"}, :dev "lo", :scope "link"}]
 
-(clojure.pprint/print-table (map (fn [x] {:iproute x :parsed (iproute.route/parse x)}) samples))
 ```
-
-|                                                                      :iproute |                                                                                                                     :parsed |
-|-------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-|                  10.8.0.32 dev tun11  proto kernel  scope link  src 10.8.0.31 |                     [:route {:net {:ip "10.8.0.32"}, :dev "tun11", :proto "kernel", :scope "link", :src {:ip "10.8.0.31"}}] |
-|         169.254.0.0/16 dev eth0  proto kernel  scope link  src 169.254.70.142 |   [:route {:net {:ip "169.254.0.0", :mask "16"}, :dev "eth0", :proto "kernel", :scope "link", :src {:ip "169.254.70.142"}}] |
-| fe80::/64 dev eth1  proto kernel  metric 256  mtu 1500 advmss 1440 hoplimit 0 | [:route {:net {:ip "fe80::", :mask "64"}, :dev "eth1", :proto "kernel", :metric 256, :mtu 1500, :advmss 1440, :hoplimit 0}] |
-|                                                127.0.0.0/8 dev lo  scope link |                                                      [:route {:net {:ip "127.0.0.0", :mask "8"}, :dev "lo", :scope "link"}] |
-
-
 
 ## REPL Development
 Development runs only java-8 due rewrite-clj oddity
