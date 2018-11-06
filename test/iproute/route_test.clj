@@ -2,7 +2,11 @@
   (:require [iproute.route :refer :all]
             [clojure.test :refer :all]
             [clojure.string :as string]
-            [instaparse.core :as instaparse]))
+            [clojure.java.io :as io]
+            [clojure.test.check :as tc]
+            [clojure.test.check.generators :as gen]
+            [clojure.test.check.properties :as prop]
+            [instaparse.core :as instaparse :refer [defparser]]))
 
 ;; ip route list
 (def samples
@@ -165,7 +169,56 @@
 (deftest test-route-parser-all-samples
   (is (= all-expected (map parses all-samples))))
 
+;; grammar testing
+
+(def gen-hex
+  (gen/fmap char
+            (gen/frequency
+             [[2 (gen/choose 48 57)]      ;; 0-9
+              [1 (gen/choose 65 70)]      ;; a-f
+              [1 (gen/choose 97 102)]]))) ;; A-F
+(def gen-octet (gen/fmap string/join (gen/vector gen-hex 1 4)))
+(def gen-colons (gen/frequency [[5 (gen/return ":")] [1 (gen/return "::")]]))
+(def gen-ipv6-octets
+  (gen/fmap (fn [[k v]] (string/join k v))
+            (gen/tuple gen-colons
+                       (gen/vector gen-octet 1 6))))
+(def gen-ipv4-octets
+  (gen/fmap (fn [[k v]] (string/join "." v))
+            (gen/vector gen-octet 1 4) ))
+
+(def ip-transformers {:ipv6 vector :ipv4 vector :HEXDIG str :h16 str :dec-octet str :DIGIT str})
+(defparser abnf-parser (io/resource "ipaddr.abnf") :input-format :abnf)
+(defparser ebnf-parser (io/resource "route.ebnf"))
+
+(defn ->parsing [version parser]
+  {:pre [(#{:ipv4 :ipv6} version)]}
+  #(->> (instaparse/parses parser % :start version)
+        (instaparse/transform ip-transformers)
+        (map vec)))
+
+(def prop-ipv6-grammar-equivalent
+  (prop/for-all
+   [octet gen-ipv6-octets]
+   (= ((->parsing :ipv6 abnf-parser) octet)
+      ((->parsing :ipv6 ebnf-parser) octet))))
+
+(deftest prop-ipv6-grammar-equivalent-test
+  (is (->> prop-ipv6-grammar-equivalent
+           (tc/quick-check 1000)
+           :result)))
+
+(def prop-ipv4-grammar-equivalent
+  (prop/for-all
+   [octet gen-ipv4-octets]
+   (= ((->parsing :ipv4 abnf-parser) octet)
+      ((->parsing :ipv4 ebnf-parser) octet))))
+
+(deftest prop-ipv4-grammar-equivalent-test
+  (is (->> prop-ipv4-grammar-equivalent
+           (tc/quick-check 1000)
+           :result)))
+
 (comment
   (do (require 'iproute.route-test :reload-all) (clojure.pprint/print-table [0 1] (map (juxt identity parse) all-samples)))
   )
-

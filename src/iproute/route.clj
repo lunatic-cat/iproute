@@ -1,5 +1,5 @@
 (ns iproute.route
-  (:require [instaparse.core :as instaparse]
+  (:require [instaparse.core :as instaparse :refer [defparser]]
             [clojure.java.io :as io]))
 
 (defn- parse-int [s]
@@ -15,7 +15,7 @@
   [transform-map & keys]
   (reduce #(assoc %1 %2 (juxt (constantly %2) (fn [& args] (into {} args)))) transform-map keys))
 
-(def parser (instaparse/parser (io/resource "route.bnf")))
+(defparser parser (io/resource "route.ebnf"))
 
 (defn parsing [parse-fn x & opts]
   (instaparse/transform (-> {:ip (fn [& args] [:ip (apply str args)])}

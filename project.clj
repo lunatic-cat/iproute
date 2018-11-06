@@ -6,6 +6,7 @@
   :dependencies [[org.clojure/clojure "1.10.0-RC1"]
                  [instaparse "1.4.9"]]
   :profiles {:dev {:dependencies [[rewrite-clj "0.6.1"]
+                                  [org.clojure/test.check "0.10.0-alpha3"]
                                   [eftest "0.5.3"]
                                   [com.bhauman/rebel-readline "0.1.4" :exclusions [rewrite-clj]]
                                   [cljsh "0.1.0-SNAPSHOT"]
