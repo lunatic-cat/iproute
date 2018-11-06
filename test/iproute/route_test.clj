@@ -220,5 +220,9 @@
            :result)))
 
 (comment
+  ;; overview for examples to parsed result
   (do (require 'iproute.route-test :reload-all) (clojure.pprint/print-table [0 1] (map (juxt identity parse) all-samples)))
+
+  ;; inspect property based fails
+  (map (juxt (->parsing :ipv4 abnf-parser) (->parsing :ipv4 ebnf-parser)) (gen/sample gen-ipv4-octets 50))
   )
