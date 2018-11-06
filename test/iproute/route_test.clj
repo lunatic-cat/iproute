@@ -30,6 +30,7 @@
 (deftest test-route-parser-samples
   (is (= expected (parses samples))))
 
+;; ip route list table all
 (def all-samples
   "10.8.0.32 dev tun11  proto kernel  scope link  src 10.8.0.31
   10.80.255.126 dev ppp0  proto kernel  scope link

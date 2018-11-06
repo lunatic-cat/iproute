@@ -2,6 +2,7 @@
   (:require [iproute.rule :refer :all]
             [clojure.test :refer :all]))
 
+;; ip rule list
 (def samples
   "0:	from all lookup local
   10097:	from all to 8.8.8.8 lookup ovpnc1
