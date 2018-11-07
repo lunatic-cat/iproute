@@ -10,7 +10,7 @@
                             (transform/parse-using-and-retain-key transform/into-hashmap :net)
                             (transform/parse-using-and-retain-key str :ip :via :src)
                             (transform/parse-using-and-retain-key transform/parse-int :metric :mtu :advmss :error :hoplimit)
-                            (assoc :default (fn [& args] [:default true])))
+                            (transform/parse-using-and-retain-key (constantly true) :default :cache))
                         (apply parse-fn parser x opts)))
 
 (def parses (partial parsing instaparse/parses))

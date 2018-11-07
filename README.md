@@ -8,6 +8,7 @@ A library to parse output of `iproute2` using EBNF grammar
 ## Usage
 
 ```clojure
+;; ip rule / ip route list table all
 (def samples "10.8.0.32 dev tun11  proto kernel  scope link  src 10.8.0.31
   169.254.0.0/16 dev eth0  proto kernel  scope link  src 169.254.70.142
   fe80::/64 dev eth1  proto kernel  metric 256  mtu 1500 advmss 1440 hoplimit 0
@@ -20,6 +21,18 @@ A library to parse output of `iproute2` using EBNF grammar
 {:net {:ip "fe80::", :mask "64"}, :dev "eth1", :proto "kernel", :metric 256, :mtu 1500, :advmss 1440, :hoplimit 0}
 {:net {:ip "127.0.0.0", :mask "8"}, :dev "lo", :scope "link"}]
 
+
+;; ip route get 192.168.0.101
+(def sample-route-get
+  "192.168.0.101 via 10.80.255.126 dev ppp0  src 5.166.84.64
+    cache  mtu 1492 advmss 1452 hoplimit 64")
+
+(iproute.route/parse sample-route-get)
+
+[{:net {:ip "192.168.0.101"}, :via "10.80.255.126", :dev "ppp0", :src "5.166.84.64", :cache true, :mtu 1492, :advmss 1452, :hoplimit 64}]
+
+
+;; ip rule
 (def rule-samples "0:	from all lookup local
   10097:	from all to 8.8.8.8 lookup ovpnc1
   10098:	from all to 1.1.1.1 lookup ovpnc1

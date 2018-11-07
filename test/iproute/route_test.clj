@@ -168,6 +168,24 @@
 (deftest test-route-parser-all-samples
   (is (= all-expected (parses all-samples))))
 
+;; ip route get 192.168.0.101
+(def sample-route-get
+  "192.168.0.101 via 10.80.255.126 dev ppp0  src 5.166.84.64
+    cache  mtu 1492 advmss 1452 hoplimit 64")
+
+(def expected-route-get
+  '([{:advmss 1452,
+     :cache true,
+     :dev "ppp0",
+     :hoplimit 64,
+     :mtu 1492,
+     :net {:ip "192.168.0.101"},
+     :src "5.166.84.64",
+     :via "10.80.255.126"}]))
+
+(deftest test-route-get-parser-sample
+  (is (= expected-route-get (parses sample-route-get))))
+
 ;; grammar testing
 
 (def gen-hex

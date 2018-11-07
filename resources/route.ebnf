@@ -1,5 +1,5 @@
 routes = (route <nl>?)+
-route = <_>? mode? default? net? via? dev (table | proto | metric | expires | mtu | advmss | error | hoplimit | scope | src)*
+route = <_>? mode? default? net? via? dev (table | proto | metric | expires | mtu | advmss | error | hoplimit | scope | src | cache)*
 mode = ('local' | 'broadcast' | 'unreachable') <_>?
 net = ip mask? <_>?
 default = <'default'> <_>?
@@ -23,6 +23,10 @@ src = <'src'> <_> hide-ip <_>?
 <word> = #'[a-za-z0-9]+'
 <_> = #' '*
 <nl> = #'\n'
+<nl_> = #'\n( )*'
+
+(* "route get ip" is multiline *)
+cache = <nl_> <'cache'> <_>?
 
 (* https://stackoverflow.com/a/14639569/423551 *)
 <ipv6> = h16-colon-6 ls32 |
