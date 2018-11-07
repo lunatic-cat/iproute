@@ -15,8 +15,8 @@ A library to parse output of `iproute2` using EBNF grammar
   
 (iproute.route/parse samples)
 
-[{:net {:ip "10.8.0.32"}, :dev "tun11", :proto "kernel", :scope "link", :src {:ip "10.8.0.31"}}
-{:net {:ip "169.254.0.0", :mask "16"}, :dev "eth0", :proto "kernel", :scope "link", :src {:ip "169.254.70.142"}}
+[{:net {:ip "10.8.0.32"}, :dev "tun11", :proto "kernel", :scope "link", :src "10.8.0.31"}
+{:net {:ip "169.254.0.0", :mask "16"}, :dev "eth0", :proto "kernel", :scope "link", :src "169.254.70.142"}
 {:net {:ip "fe80::", :mask "64"}, :dev "eth1", :proto "kernel", :metric 256, :mtu 1500, :advmss 1440, :hoplimit 0}
 {:net {:ip "127.0.0.0", :mask "8"}, :dev "lo", :scope "link"}]
 
