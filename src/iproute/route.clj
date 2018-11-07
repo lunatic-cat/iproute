@@ -9,7 +9,7 @@
   (instaparse/transform (-> {:route transform/into-hashmap :routes vector}
                             (transform/parse-using-and-retain-key transform/into-hashmap :net)
                             (transform/parse-using-and-retain-key str :ip :via :src)
-                            (transform/parse-using-and-retain-key transform/parse-int :metric :mtu :advmss :error :hoplimit)
+                            (transform/parse-using-and-retain-key transform/parse-int :metric :mtu :advmss :error :hoplimit :uid)
                             (transform/parse-using-and-retain-key (constantly true) :default :cache))
                         (apply parse-fn parser x opts)))
 

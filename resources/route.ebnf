@@ -1,5 +1,5 @@
 routes = (route <nl>?)+
-route = <_>? mode? default? net? via? dev (table | proto | metric | expires | mtu | advmss | error | hoplimit | scope | src | cache)*
+route = <_>? mode? default? net? via? dev (table | proto | metric | expires | mtu | advmss | error | hoplimit | scope | src | cache | uid)*
 mode = ('local' | 'broadcast' | 'unreachable') <_>?
 net = ip mask? <_>?
 default = <'default'> <_>?
@@ -20,6 +20,7 @@ error = <'error'> <_> int <_>?
 hoplimit = <'hoplimit'> <_> n <_>?
 scope = <'scope'> <_> word <_>?
 src = <'src'> <_> hide-ip <_>?
+uid = <'uid'> <_> n <_>?
 <word> = #'[a-za-z0-9]+'
 <_> = #' '*
 <nl> = #'\n'
