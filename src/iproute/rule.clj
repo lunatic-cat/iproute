@@ -8,7 +8,8 @@
 (defn parsing [parse-fn x & opts]
   (instaparse/transform (-> {:rule transform/into-hashmap :rules vector}
                             (transform/parse-using-and-retain-key transform/parse-int :pref)
-                            (transform/parse-using-and-retain-key str :to))
+                            (transform/parse-using-and-retain-key transform/into-hashmap :to)
+                            (transform/parse-using-and-retain-key str :ip))
                         (apply parse-fn parser x opts)))
 
 (def parses (partial parsing instaparse/parses))

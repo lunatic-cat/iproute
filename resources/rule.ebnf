@@ -4,7 +4,7 @@ rule = <_>? pref colon from to? lookup
 pref = n
 <colon> = <':'> <tab>
 from = <'from'> <_> word <_>?
-to = <'to'> <_> ipv4 <_>?
+to = <'to'> <_> ip mask? <_>?
 lookup = <'lookup'> <_> word <_>?
 
 <n> = #'[0-9]+'
@@ -12,6 +12,9 @@ lookup = <'lookup'> <_> word <_>?
 <_> = #' '*
 <tab> = #'\t'
 <nl> = #'\n'
+
+ip = ipv4
+mask = <'/'> #'\d{1,2}' <_>?
 
 <ipv4> = dec-octet "." dec-octet "." dec-octet "." dec-octet
 <dec-octet> = digit | (#"[0-9]" digit) | ("1" digit digit) | ("2" #"[0-4]" digit) | ("25" #"[0-5]")
