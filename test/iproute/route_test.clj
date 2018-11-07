@@ -25,7 +25,7 @@
      {:dev "br0",:net {:ip "192.168.1.0", :mask "24"},:proto "kernel",:scope "link",:src {:ip "192.168.1.1"}}
      {:dev "eth0",:net {:ip "169.254.0.0", :mask "16"},:proto "kernel",:scope "link",:src {:ip "169.254.70.142"}}
      {:dev "lo", :net {:ip "127.0.0.0", :mask "8"}, :scope "link"}
-     {:default true, :dev "ppp0", :via [:ip "10.80.255.126"]}]))
+     {:default true, :dev "ppp0", :via {:ip "10.80.255.126"}}]))
 
 (deftest test-route-parser-samples
   (is (= expected (parses samples))))
@@ -105,14 +105,14 @@
      {:dev "br0",:net {:ip "192.168.1.0", :mask "24"},:proto "kernel",:scope "link",:src {:ip "192.168.1.1"}}
      {:dev "eth0",:net {:ip "169.254.0.0", :mask "16"},:proto "kernel",:scope "link",:src {:ip "169.254.70.142"}}
      {:dev "lo", :net {:ip "127.0.0.0", :mask "8"}, :scope "link"}
-     {:default true, :dev "ppp0", :via [:ip "10.80.255.126"]}
+     {:default true, :dev "ppp0", :via {:ip "10.80.255.126"}}
      {:dev "tun11",:net {:ip "10.8.0.32"},:proto "kernel",:scope "link",:src {:ip "10.8.0.31"},:table "ovpnc1"}
      {:dev "ppp0",:net {:ip "10.80.255.126"},:proto "kernel",:scope "link",:table "ovpnc1"}
      {:dev "br0",:net {:ip "169.254.39.0", :mask "24"},:proto "kernel",:scope "link",:src {:ip "169.254.39.121"},:table "ovpnc1"}
      {:dev "br0",:net {:ip "192.168.1.0", :mask "24"},:proto "kernel",:scope "link",:src {:ip "192.168.1.1"},:table "ovpnc1"}
      {:dev "eth0",:net {:ip "169.254.0.0", :mask "16"},:proto "kernel",:scope "link",:src {:ip "169.254.70.142"},:table "ovpnc1"}
      {:dev "lo",:net {:ip "127.0.0.0", :mask "8"},:scope "link",:table "ovpnc1"}
-     {:default true,:dev "tun11",:table "ovpnc1",:via [:ip "10.8.0.32"]}
+     {:default true,:dev "tun11",:table "ovpnc1",:via {:ip "10.8.0.32"}}
      {:dev "br0",:mode "local",:net {:ip "192.168.1.1"},:proto "kernel",:scope "host",:src {:ip "192.168.1.1"},:table "local"}
      {:dev "lo",:mode "broadcast",:net {:ip "127.255.255.255"},:proto "kernel",:scope "link",:src {:ip "127.0.0.1"},:table "local"}
      {:dev "br0",:mode "broadcast",:net {:ip "192.168.1.0"},:proto "kernel",:scope "link",:src {:ip "192.168.1.1"},:table "local"}
@@ -142,20 +142,20 @@
      {:advmss 1432,:dev "ppp0",:hoplimit 0,:metric 256,:mtu 1492,:net {:ip "fe80::", :mask "64"},:proto "kernel"}
      {:advmss 1432,:dev "ppp0",:hoplimit 0,:metric 1,:mtu 1492,:net {:ip "fe80::", :mask "10"}}
      {:advmss 1432,:dev "ppp0",:hoplimit 0,:metric 256,:mtu 1492,:net {:ip "fe80::", :mask "10"},:proto "kernel"}
-     {:advmss 1432,:default true,:dev "ppp0",:expires "4471",:hoplimit 64,:metric 1024,:mtu 1492,:proto "kernel",:via [:ip "fe80::8626:2bff:feec:d78b"]}
+     {:advmss 1432,:default true,:dev "ppp0",:expires "4471",:hoplimit 64,:metric 1024,:mtu 1492,:proto "kernel",:via {:ip "fe80::8626:2bff:feec:d78b"}}
      {:default true,:dev "lo",:error -101,:hoplimit 255,:metric 4294967295,:mode "unreachable",:proto "kernel",:table "0"}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "::1"},:proto "none",:table "local",:via [:ip "::"]}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "2a02:2698:422:3c70::"},:proto "none",:table "local",:via [:ip "::"]}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "2a02:2698:422:3c70::1"},:proto "none",:table "local",:via [:ip "::"]}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::"},:proto "none",:table "local",:via [:ip "::"]}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::"},:proto "none",:table "local",:via [:ip "::"]}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::"},:proto "none",:table "local",:via [:ip "::"]}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::810:3ac7:995b:e0ac"},:proto "none",:table "local",:via [:ip "::"]}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::bc40:c8ff:fe32:9e55"},:proto "none",:table "local",:via [:ip "::"]}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::c414:aff:feab:cb"},:proto "none",:table "local",:via [:ip "::"]}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::d217:c2ff:feb2:3128"},:proto "none",:table "local",:via [:ip "::"]}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::d217:c2ff:feb2:3128"},:proto "none",:table "local",:via [:ip "::"]}
-     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::d217:c2ff:feb2:3128"},:proto "none",:table "local",:via [:ip "::"]}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "::1"},:proto "none",:table "local",:via {:ip "::"}}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "2a02:2698:422:3c70::"},:proto "none",:table "local",:via {:ip "::"}}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "2a02:2698:422:3c70::1"},:proto "none",:table "local",:via {:ip "::"}}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::"},:proto "none",:table "local",:via {:ip "::"}}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::"},:proto "none",:table "local",:via {:ip "::"}}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::"},:proto "none",:table "local",:via {:ip "::"}}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::810:3ac7:995b:e0ac"},:proto "none",:table "local",:via {:ip "::"}}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::bc40:c8ff:fe32:9e55"},:proto "none",:table "local",:via {:ip "::"}}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::c414:aff:feab:cb"},:proto "none",:table "local",:via {:ip "::"}}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::d217:c2ff:feb2:3128"},:proto "none",:table "local",:via {:ip "::"}}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::d217:c2ff:feb2:3128"},:proto "none",:table "local",:via {:ip "::"}}
+     {:advmss 16376,:dev "lo",:hoplimit 0,:metric 0,:mode "local",:mtu 16436,:net {:ip "fe80::d217:c2ff:feb2:3128"},:proto "none",:table "local",:via {:ip "::"}}
      {:advmss 1440,:dev "eth1",:hoplimit 0,:metric 256,:mtu 1500,:net {:ip "ff00::", :mask "8"},:table "local"}
      {:advmss 1440,:dev "vlan1",:hoplimit 0,:metric 256,:mtu 1500,:net {:ip "ff00::", :mask "8"},:table "local"}
      {:advmss 1440,:dev "br0",:hoplimit 0,:metric 256,:mtu 1500,:net {:ip "ff00::", :mask "8"},:table "local"}

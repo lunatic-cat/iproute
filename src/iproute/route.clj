@@ -7,7 +7,7 @@
 
 (defn parsing [parse-fn x & opts]
   (instaparse/transform (-> {:route transform/into-hashmap :routes vector}
-                            (transform/parse-using-and-retain-key transform/into-hashmap :net :src)
+                            (transform/parse-using-and-retain-key transform/into-hashmap :net :src :via)
                             (transform/parse-using-and-retain-key str :ip)
                             (transform/parse-using-and-retain-key transform/parse-int :metric :mtu :advmss :error :hoplimit)
                             (assoc :default (fn [& args] [:default true])))
