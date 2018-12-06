@@ -175,16 +175,31 @@
 
 (def expected-route-get
   '([{:advmss 1452,
-     :cache true,
-     :dev "ppp0",
-     :hoplimit 64,
-     :mtu 1492,
-     :net {:ip "192.168.0.101"},
-     :src "5.166.84.64",
-     :via "10.80.255.126"}]))
+      :cache true,
+      :dev "ppp0",
+      :hoplimit 64,
+      :mtu 1492,
+      :net {:ip "192.168.0.101"},
+      :src "5.166.84.64",
+      :via "10.80.255.126"}]))
 
 (deftest test-route-get-parser-sample
   (is (= expected-route-get (parses sample-route-get))))
+
+;; ip -6 route get 2a00:1450:4001:825::200e
+(def sample-route-get-teredo-6
+  "2a00:1450:4001:825::200e from :: dev teredo src 2001:0:53aa:64c:10c8:ada:fa59:9a05 metric 1029 pref medium")
+
+(def expected-route-get-teredo-6
+  '([{:net {:ip "2a00:1450:4001:825::200e"},
+      :from [:ip "::"],
+      :dev "teredo",
+      :src "2001:0:53aa:64c:10c8:ada:fa59:9a05",
+      :metric 1029,
+      :pref "medium"}]))
+
+(deftest test-route-get-parser-sample
+  (is (= expected-route-get-teredo-6 (parses sample-route-get-teredo-6))))
 
 ;; grammar testing
 
